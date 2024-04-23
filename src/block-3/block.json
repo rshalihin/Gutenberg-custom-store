@@ -1,11 +1,11 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "test/block-3",
+	"name": "create-block/metadata-block",
 	"version": "0.1.0",
-	"title": "This is an awesome block",
-	"category": "widgets",
-	"icon": "smiley",
+	"title": "Metadata Block",
+	"category": "text",
+	"icon": "nametag",
 	"description": "Example block scaffolded with Create Block tool.",
 	"example": {},
 	"supports": {

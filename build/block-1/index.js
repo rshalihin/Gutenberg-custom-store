@@ -39,22 +39,22 @@ function Edit() {
     const todosStore = select('todo-store/store');
     return todosStore && todosStore.getTodos();
   }, []);
-  console.log(todos);
   const actions = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)('todo-store/store');
   const addTodo = actions && actions.addTodo;
   const toggleTodo = actions && actions.toggleTodo;
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)()
-  }, !todos && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Todo List – hello from the editor!', 'todo-list')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", null, todos && todos.map(todo => {
+  }, !todos && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Todo List – hello from the editor!', 'todo-list')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", null, todos && todos.map((todo, index) => {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
       key: todo.id,
       className: todo.completed ? 'todo-completed' : ''
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.CheckboxControl, {
+      disabled: todo.loading,
       label: todo.title,
       checked: todo.completed,
       onChange: () => {
         if (toggleTodo) {
-          toggleTodo(todo);
+          toggleTodo(todo, index);
         }
       }
     }));

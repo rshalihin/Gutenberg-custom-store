@@ -26,7 +26,7 @@ var __webpack_exports__ = {};
  */
 
 /* eslint-disable no-console */
-console.log("Hello World! (from test-block-3 block)");
+console.log("Hello World! (from create-block-block-3 block)");
 /* eslint-enable no-console */
 /******/ })()
 ;

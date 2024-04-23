@@ -14,7 +14,6 @@ export default function Edit() {
 		const todosStore = select('todo-store/store');
 		return todosStore && todosStore.getTodos();
 	}, []);
-	console.log(todos);
 	const actions = useDispatch('todo-store/store');
 	const addTodo = actions && actions.addTodo;
 	const toggleTodo = actions && actions.toggleTodo;
@@ -24,14 +23,16 @@ export default function Edit() {
 			{ __( 'Todo List – hello from the editor!', 'todo-list' ) }
 			</p>}
 			<ul>
-				{ todos && todos.map( (todo) => {
+				{ todos && todos.map( (todo, index) => {
 					return(
 						<li key={todo.id} className={todo.completed ? 'todo-completed' : ''}>
-							<CheckboxControl label={todo.title}
+							<CheckboxControl
+								disabled={todo.loading}
+								label={todo.title}
 								checked={todo.completed}
 								onChange={() =>{
 									if ( toggleTodo ) {
-										toggleTodo(todo);
+										toggleTodo(todo, index);
 									}}}
 								/>
 						</li>
