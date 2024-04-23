@@ -2,6 +2,65 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/plugins/sidebar.js":
+/*!********************************!*\
+  !*** ./src/plugins/sidebar.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_plugins__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/plugins */ "@wordpress/plugins");
+/* harmony import */ var _wordpress_plugins__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_plugins__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_edit_post__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/edit-post */ "@wordpress/edit-post");
+/* harmony import */ var _wordpress_edit_post__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_edit_post__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__);
+
+
+
+
+
+
+const MetaFieldInput = () => {
+  const subtitleValue = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => {
+    return select('core/editor').getEditedPostAttribute('meta')._demo_block_meta_box_gutenberg_blocks;
+  }, []);
+  const {
+    editPost
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)('core/editor');
+  const onChangePostSubtitle = newValue => {
+    editPost({
+      meta: {
+        _demo_block_meta_box_gutenberg_blocks: newValue
+      }
+    });
+  };
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Post Options', 'demo-block-meta-plugin')
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.TextControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Post Options', 'demo-block-meta-plugin'),
+    value: subtitleValue,
+    onChange: onChangePostSubtitle
+  }));
+};
+(0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_1__.registerPlugin)('demo-block-meta-plugin', {
+  render: () => {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_edit_post__WEBPACK_IMPORTED_MODULE_2__.PluginSidebar, {
+      name: "meta-field-sidebar",
+      title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Post Options', 'demo-block-meta-plugin'),
+      icon: "admin-settings"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(MetaFieldInput, null));
+  }
+});
+
+/***/ }),
+
 /***/ "./src/store/actions.js":
 /*!******************************!*\
   !*** ./src/store/actions.js ***!
@@ -12,7 +71,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addTodo: () => (/* binding */ addTodo),
 /* harmony export */   populatedTodos: () => (/* binding */ populatedTodos),
-/* harmony export */   toggleTodo: () => (/* binding */ toggleTodo)
+/* harmony export */   toggleTodo: () => (/* binding */ toggleTodo),
+/* harmony export */   updateTodo: () => (/* binding */ updateTodo)
 /* harmony export */ });
 /* harmony import */ var _type__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./type */ "./src/store/type.js");
 /* harmony import */ var _controls__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./controls */ "./src/store/controls.js");
@@ -30,14 +90,25 @@ function* addTodo(title) {
   }
 }
 ;
-function* toggleTodo(todo) {
+function* toggleTodo(todo, index) {
   try {
+    yield updateTodo({
+      ...todo,
+      loading: true
+    }, index);
     const updatedTodo = yield (0,_controls__WEBPACK_IMPORTED_MODULE_1__.toggleTodo)(todo);
-    console.log(updatedTodo);
+    return updateTodo(updatedTodo, index);
   } catch (error) {
-    return dispatch('core/notices').createErrorNotice(error.message || 'Data could not be updated');
+    return dispatch('core/notices').createErrorNotice(error.message || 'Data could not updated');
   }
 }
+const updateTodo = (todo, index) => {
+  return {
+    type: _type__WEBPACK_IMPORTED_MODULE_0__.UPDATED_TODO,
+    todo,
+    index
+  };
+};
 const populatedTodos = todos => {
   return {
     type: _type__WEBPACK_IMPORTED_MODULE_0__.POPULATED_TODOS,
@@ -188,6 +259,15 @@ const reducer = (state = DEFAULT_STATS, action) => {
         ...state,
         items: action.todos
       };
+    case _type__WEBPACK_IMPORTED_MODULE_0__.UPDATED_TODO:
+      {
+        const itemsCopy = [...state.items];
+        itemsCopy[action.index] = action.todo;
+        return {
+          ...state,
+          items: itemsCopy
+        };
+      }
     default:
       return {
         ...state
@@ -234,10 +314,22 @@ function* getTodos() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getTodos: () => (/* binding */ getTodos)
+/* harmony export */   getDoneTodosNumbers: () => (/* binding */ getDoneTodosNumbers),
+/* harmony export */   getTodos: () => (/* binding */ getTodos),
+/* harmony export */   getTodosNumbers: () => (/* binding */ getTodosNumbers),
+/* harmony export */   getUndoneTodosNumbers: () => (/* binding */ getUndoneTodosNumbers)
 /* harmony export */ });
 const getTodos = state => {
   return state.items;
+};
+const getTodosNumbers = state => {
+  return state.items.length;
+};
+const getDoneTodosNumbers = state => {
+  return state.items.filter(todo => todo.completed).length;
+};
+const getUndoneTodosNumbers = state => {
+  return state.items.filter(todo => !todo.completed).length;
 };
 
 /***/ }),
@@ -254,13 +346,35 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   CREATE_TODO: () => (/* binding */ CREATE_TODO),
 /* harmony export */   FETCH_TODOS: () => (/* binding */ FETCH_TODOS),
 /* harmony export */   POPULATED_TODOS: () => (/* binding */ POPULATED_TODOS),
-/* harmony export */   TOGGLE_TODO: () => (/* binding */ TOGGLE_TODO)
+/* harmony export */   TOGGLE_TODO: () => (/* binding */ TOGGLE_TODO),
+/* harmony export */   UPDATED_TODO: () => (/* binding */ UPDATED_TODO)
 /* harmony export */ });
 const ADD_TODO = 'ADD_TODO';
 const FETCH_TODOS = 'FETCH_TODOS';
 const POPULATED_TODOS = 'POPULATED_TODOS';
 const CREATE_TODO = 'CREATE_TODO';
 const TOGGLE_TODO = 'TOGGLE_TODO';
+const UPDATED_TODO = 'UPDATED_TODO';
+
+/***/ }),
+
+/***/ "react":
+/*!************************!*\
+  !*** external "React" ***!
+  \************************/
+/***/ ((module) => {
+
+module.exports = window["React"];
+
+/***/ }),
+
+/***/ "@wordpress/components":
+/*!************************************!*\
+  !*** external ["wp","components"] ***!
+  \************************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["components"];
 
 /***/ }),
 
@@ -271,6 +385,36 @@ const TOGGLE_TODO = 'TOGGLE_TODO';
 /***/ ((module) => {
 
 module.exports = window["wp"]["data"];
+
+/***/ }),
+
+/***/ "@wordpress/edit-post":
+/*!**********************************!*\
+  !*** external ["wp","editPost"] ***!
+  \**********************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["editPost"];
+
+/***/ }),
+
+/***/ "@wordpress/i18n":
+/*!******************************!*\
+  !*** external ["wp","i18n"] ***!
+  \******************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["i18n"];
+
+/***/ }),
+
+/***/ "@wordpress/plugins":
+/*!*********************************!*\
+  !*** external ["wp","plugins"] ***!
+  \*********************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["plugins"];
 
 /***/ })
 
@@ -350,6 +494,8 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./src/store/index.js");
+/* harmony import */ var _plugins_sidebar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./plugins/sidebar */ "./src/plugins/sidebar.js");
+
 
 })();
 

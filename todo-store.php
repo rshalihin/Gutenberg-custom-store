@@ -16,6 +16,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+require_once __DIR__ . '/metabox.php';
+require_once __DIR__ . '/templates.php';
 
 function create_block_todo_store_block_init() {
 	$asset_file = include plugin_dir_path( __FILE__ ) . 'build/index.asset.php';

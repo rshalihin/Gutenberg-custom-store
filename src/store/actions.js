@@ -1,5 +1,5 @@
-import { ADD_TODO, POPULATED_TODOS, TOGGLE_TODO } from "./type";
-import { createTodo, toggleTodo as toggleTodoAction } from "./controls";
+import { ADD_TODO, POPULATED_TODOS, UPDATED_TODO } from "./type";
+import { createTodo, toggleTodo as toggleTodoControl } from "./controls";
 
 export function* addTodo(title) {
     try{
@@ -13,12 +13,21 @@ export function* addTodo(title) {
     }
 };
 
-export function* toggleTodo(todo) {
+export function* toggleTodo(todo, index) {
     try{
-        const updatedTodo = yield toggleTodoAction(todo);
-        console.log(updatedTodo);
+        yield updateTodo({...todo, loading: true}, index);
+        const updatedTodo = yield toggleTodoControl(todo);
+        return updateTodo(updatedTodo, index);
     } catch(error) {
-        return dispatch('core/notices').createErrorNotice(error.message || 'Data could not be updated');
+        return dispatch('core/notices').createErrorNotice(error.message || 'Data could not updated');
+    }
+}
+
+export const updateTodo = (todo, index) => {
+    return {
+        type: UPDATED_TODO,
+        todo,
+        index
     }
 }
 

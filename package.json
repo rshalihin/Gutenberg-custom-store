@@ -18,6 +18,10 @@
 		"@wordpress/scripts": "^27.6.0"
 	},
 	"dependencies": {
-		"@wordpress/data": "^9.26.0"
+		"@wordpress/components": "^27.4.0",
+		"@wordpress/data": "^9.26.0",
+		"@wordpress/edit-post": "^7.33.0",
+		"@wordpress/i18n": "^4.56.0",
+		"@wordpress/plugins": "^6.24.0"
 	}
 }
