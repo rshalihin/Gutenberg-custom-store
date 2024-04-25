@@ -30,3 +30,8 @@ function todo_list_todo_list_block_init() {
 	register_block_type( __DIR__ . '/build/block-3' );
 }
 add_action( 'init', 'todo_list_todo_list_block_init' );
+
+function demo_block_todo_list_block_translations() {
+	wp_set_script_translations( 'create-block-todo-list-editor-script', 'todo-list', plugin_dir_path( __FILE__ ) . 'languages' );
+}
+add_action( 'init', 'demo_block_todo_list_block_translations' );

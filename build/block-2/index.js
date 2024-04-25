@@ -217,7 +217,7 @@ module.exports = window["wp"]["i18n"];
   \********************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"create-block/todo-list-info","version":"0.1.0","title":"Todo List Info","category":"text","icon":"list-view","description":"Example block scaffolded with Create Block tool.","example":{},"supports":{"html":false},"textdomain":"block-2","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":"file:./view.js"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"create-block/todo-list-info","version":"0.1.0","title":"Todo List Info","category":"text","icon":"list-view","description":"Example block scaffolded with Create Block tool.","example":{},"supports":{"html":false},"textdomain":"todo-list","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":"file:./view.js"}');
 
 /***/ })
 
