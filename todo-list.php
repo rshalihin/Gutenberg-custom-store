@@ -35,3 +35,13 @@ function demo_block_todo_list_block_translations() {
 	wp_set_script_translations( 'create-block-todo-list-editor-script', 'todo-list', plugin_dir_path( __FILE__ ) . 'languages' );
 }
 add_action( 'init', 'demo_block_todo_list_block_translations' );
+
+
+function mrs_demo_block_todo_list_load_textdomain( $mofile, $domain ) {
+	if ( 'todo-list' === $domain && false !== strpos( $mofile, WP_LANG_DIR . '/plugins/' ) ) {
+		$locale = apply_filters( 'plugin_locale', determine_locale(), $domain );
+		$mofile = WP_PLUGIN_DIR . '/' . dirname( plugin_basename( __FILE__ ) ) . '/languages/' . $domain . '-' . $locale . '.mo';
+	}
+	return $mofile;
+}
+add_filter( 'load_textdomain_mofile', 'mrs_demo_block_todo_list_load_textdomain', 10, 2 );
